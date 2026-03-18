@@ -1,8 +1,9 @@
-streamlit==1.28.1
-supabase==2.0.3
+streamlit==1.32.0
+supabase==2.3.2
 python-dotenv==1.0.0
-pandas>=2.2.0
-plotly==5.17.0
+pandas==2.2.0
+plotly==5.18.0
 requests==2.31.0
-setuptools>=65
-wheel
+openpyxl==3.1.1
+urllib3==2.1.0
+pydantic==2.5.3
