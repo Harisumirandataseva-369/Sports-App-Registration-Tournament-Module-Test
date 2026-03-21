@@ -60,6 +60,7 @@ def add_bulk_users(users_data: List[Dict]) -> Dict:
     """Add multiple users to database"""
     try:
         supabase = get_supabase_client()
+        print("In add_bulk_users, received users_data:", users_data)  # Debugging statement
         response = supabase.table(TABLE_NAME).insert(users_data).execute()
         return {"success": True, "count": len(response.data), "data": response.data}
     except Exception as e:
@@ -116,7 +117,7 @@ def parse_csv_to_dict(csv_file) -> List[Dict]:
     try:
         df = pd.read_csv(csv_file)
         # Convert column names to lowercase and replace spaces with underscores
-        df.columns = df.columns.str.lower().str.replace(' ', '_')
+          # Debugging statement
         return df.to_dict('records')
     except Exception as e:
         st.error(f"Error parsing CSV: {str(e)}")

@@ -49,17 +49,18 @@ with tab1:
                 st.error("Please fill in all required fields (marked with *)")
             else:
                 user_data = {
-                    "first_name": first_name,
-                    "last_name": last_name,
-                    "email": email,
-                    "mobile": mobile,
-                    "number": number if number else None,
-                    "category": category,
-                    "match_status": match_status,
-                    "tournament": tournament,
-                    "sabha_reference_name": sabha_reference_name,
-                    "spl_no": spl_no if spl_no else None,
-                    "image": image_url if image_url else None
+                    "Primary_Key": f"{email}_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+                    "First Name": first_name,
+                    "Last Name": last_name,
+                    "Email": email,
+                    "Mobile": mobile,
+                    "Number": number if number else None,
+                    "Category": category,
+                    "Match Status": match_status,
+                    "Tournament": tournament,
+                    "Sabha Reference Name": sabha_reference_name,
+                    "SPL No": spl_no if spl_no else None,
+                    "Image": image_url if image_url else None
                 }
                 
                 with st.spinner("Adding user..."):
@@ -78,33 +79,34 @@ with tab2:
     with col1:
         st.markdown("""
         **Upload a CSV file with the following columns:**
-        - first_name (required)
-        - last_name
-        - email (required)
-        - mobile (required)
-        - number
-        - category (required)
-        - match_status (required)
-        - tournament (required)
-        - sabha_reference_name
-        - spl_no
-        - image
+        - First Name (required)
+        - Last Name
+        - Email (required)
+        - Mobile (required)
+        - Number
+        - Category (required)
+        - Match Status (required)
+        - Tournament (required)
+        - Sabha Reference Name
+        - SPL No
+        - Image
         """)
     
     with col2:
         # Download sample template
         sample_data = {
-            "first_name": ["John"],
-            "last_name": ["Doe"],
-            "email": ["john@example.com"],
-            "mobile": ["9876543210"],
-            "number": ["1"],
-            "category": ["Senior"],
-            "match_status": ["Registered"],
-            "tournament": ["Cricket"],
-            "sabha_reference_name": ["Sabha A"],
-            "spl_no": ["SPL001"],
-            "image": ["https://example.com/image.jpg"]
+            "Primary_Key": f"'john@example.com'_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+            "First Name": ["John"],
+            "Last Name": ["Doe"],
+            "Email": ["john@example.com"],
+            "Mobile": ["9876543210"],
+            "Number": ["1"],
+            "Category": ["Senior"],
+            "Match Status": ["Registered"],
+            "Tournament": ["Cricket"],
+            "Sabha Reference Name": ["Sabha A"],
+            "SPL No": ["SPL001"],
+            "Image": ["https://example.com/image.jpg"]
         }
         sample_df = pd.DataFrame(sample_data)
         csv = sample_df.to_csv(index=False)
@@ -130,12 +132,15 @@ with tab2:
             st.metric("Total Records", len(df))
         
         if st.button("✅ Upload All Records", use_container_width=True):
+            # Reset file pointer to beginning
+            uploaded_file.seek(0)
             # Parse and validate
             users_data = parse_csv_to_dict(uploaded_file)
-            
+            print("Parsed Users Data:", users_data)  # Debugging statement
             if users_data:
                 with st.spinner(f"Uploading {len(users_data)} records..."):
                     result = add_bulk_users(users_data)
+                    print("Bulk Upload Result:", result)  # Debugging statement
                     if result["success"]:
                         st.success(f"✅ Successfully uploaded {result['count']} records!")
                         st.balloons()
