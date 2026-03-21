@@ -36,14 +36,14 @@ else:
     with col1:
         st.metric("Total Participants", len(df))
     with col2:
-        st.metric("Tournaments", df["tournament"].nunique() if "tournament" in df.columns else 0)
+        st.metric("Tournaments", df["Tournament"].nunique() if "Tournament" in df.columns else 0)
     with col3:
-        st.metric("Categories", df["category"].nunique() if "category" in df.columns else 0)
+        st.metric("Categories", df["Category"].nunique() if "Category" in df.columns else 0)
     with col4:
-        registered = len(df[df["match_status"] == "Registered"]) if "match_status" in df.columns else 0
+        registered = len(df[df["Match Status"] == "Registered"]) if "Match Status" in df.columns else 0
         st.metric("Registered", registered)
     with col5:
-        pending = len(df[df["match_status"] == "Pending"]) if "match_status" in df.columns else 0
+        pending = len(df[df["Match Status"] == "Pending"]) if "Match Status" in df.columns else 0
         st.metric("Pending", pending)
     
     st.divider()
@@ -52,10 +52,10 @@ else:
     col1, col2 = st.columns(2)
     
     # Tournament Distribution
-    if "tournament" in df.columns:
+    if "Tournament" in df.columns:
         with col1:
             st.subheader("Participants by Tournament")
-            tournament_counts = df["tournament"].value_counts()
+            tournament_counts = df["Tournament"].value_counts()
             fig_tournament = px.pie(
                 values=tournament_counts.values,
                 names=tournament_counts.index,
@@ -64,10 +64,10 @@ else:
             st.plotly_chart(fig_tournament, use_container_width=True)
     
     # Category Distribution
-    if "category" in df.columns:
+    if "Category" in df.columns:
         with col2:
             st.subheader("Participants by Category")
-            category_counts = df["category"].value_counts()
+            category_counts = df["Category"].value_counts()
             fig_category = px.bar(
                 x=category_counts.index,
                 y=category_counts.values,
@@ -81,10 +81,10 @@ else:
     col1, col2 = st.columns(2)
     
     # Match Status Distribution
-    if "match_status" in df.columns:
+    if "Match Status" in df.columns:
         with col1:
             st.subheader("Participants by Status")
-            status_counts = df["match_status"].value_counts()
+            status_counts = df["Match Status"].value_counts()
             fig_status = px.bar(
                 x=status_counts.index,
                 y=status_counts.values,
@@ -101,10 +101,10 @@ else:
             st.plotly_chart(fig_status, use_container_width=True)
     
     # Tournament vs Category
-    if "tournament" in df.columns and "category" in df.columns:
+    if "Tournament" in df.columns and "Category" in df.columns:
         with col2:
             st.subheader("Tournament vs Category Breakdown")
-            cross_tab = pd.crosstab(df["tournament"], df["category"])
+            cross_tab = pd.crosstab(df["Tournament"], df["Category"])
             fig_cross = px.imshow(
                 cross_tab,
                 labels=dict(x="Category", y="Tournament", color="Count"),
@@ -121,18 +121,18 @@ else:
     tab1, tab2, tab3 = st.tabs(["By Tournament", "By Category", "By Status"])
     
     with tab1:
-        if "tournament" in df.columns:
-            tournament_breakdown = df.groupby("tournament").size().reset_index(name="Count")
+        if "Tournament" in df.columns:
+            tournament_breakdown = df.groupby("Tournament").size().reset_index(name="Count")
             st.dataframe(tournament_breakdown, use_container_width=True)
     
     with tab2:
-        if "category" in df.columns:
-            category_breakdown = df.groupby("category").size().reset_index(name="Count")
+        if "Category" in df.columns:
+            category_breakdown = df.groupby("Category").size().reset_index(name="Count")
             st.dataframe(category_breakdown, use_container_width=True)
     
     with tab3:
-        if "match_status" in df.columns:
-            status_breakdown = df.groupby("match_status").size().reset_index(name="Count")
+        if "Match Status" in df.columns:
+            status_breakdown = df.groupby("Match Status").size().reset_index(name="Count")
             st.dataframe(status_breakdown, use_container_width=True)
     
     st.divider()
@@ -140,17 +140,17 @@ else:
     # Advanced Analytics
     st.subheader("Advanced Analytics")
     
-    if "tournament" in df.columns and "category" in df.columns:
+    if "Tournament" in df.columns and "Category" in df.columns:
         st.write("**Top Combinations (Tournament + Category)**")
-        combinations = df.groupby(["tournament", "category"]).size().reset_index(name="Count").sort_values("Count", ascending=False)
+        combinations = df.groupby(["Tournament", "Category"]).size().reset_index(name="Count").sort_values("Count", ascending=False)
         st.dataframe(combinations.head(10), use_container_width=True)
     
     # Email Distribution
-    if "email" in df.columns:
-        unique_emails = df["email"].nunique()
+    if "Email" in df.columns:
+        unique_emails = df["Email"].nunique()
         st.metric("Unique Email Addresses", unique_emails)
     
     # Mobile Distribution
-    if "mobile" in df.columns:
-        unique_mobiles = df["mobile"].nunique()
+    if "Mobile" in df.columns:
+        unique_mobiles = df["Mobile"].nunique()
         st.metric("Unique Mobile Numbers", unique_mobiles)

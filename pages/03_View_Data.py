@@ -37,7 +37,7 @@ else:
     with col1:
         tournament_filter = st.multiselect(
             "Tournament",
-            options=df["tournament"].unique() if "tournament" in df.columns else [],
+            options=df["Tournament"].unique() if "Tournament" in df.columns else [],
             key="tournament_filter"
         )
         if tournament_filter:
@@ -46,7 +46,7 @@ else:
     with col2:
         category_filter = st.multiselect(
             "Category",
-            options=df["category"].unique() if "category" in df.columns else [],
+            options=df["Category"].unique() if "Category" in df.columns else [],
             key="category_filter"
         )
         if category_filter:
@@ -55,7 +55,7 @@ else:
     with col3:
         status_filter = st.multiselect(
             "Match Status",
-            options=df["match_status"].unique() if "match_status" in df.columns else [],
+            options=df["Match Status"].unique() if "Match Status" in df.columns else [],
             key="status_filter"
         )
         if status_filter:
@@ -74,8 +74,8 @@ else:
     
     if search_name:
         filtered_df = filtered_df[
-            (filtered_df["first_name"].str.contains(search_name, case=False, na=False)) |
-            (filtered_df["last_name"].str.contains(search_name, case=False, na=False))
+            (filtered_df["First Name"].str.contains(search_name, case=False, na=False)) |
+            (filtered_df["Last Name"].str.contains(search_name, case=False, na=False))
         ]
     
     # Display statistics
@@ -85,11 +85,11 @@ else:
     with col1:
         st.metric("Total Records", len(filtered_df))
     with col2:
-        st.metric("Tournaments", df["tournament"].nunique() if "tournament" in df.columns else 0)
+        st.metric("Tournaments", df["Tournament"].nunique() if "Tournament" in df.columns else 0)
     with col3:
-        st.metric("Categories", df["category"].nunique() if "category" in df.columns else 0)
+        st.metric("Categories", df["Category"].nunique() if "Category" in df.columns else 0)
     with col4:
-        st.metric("Mobile Numbers", df["mobile"].nunique() if "mobile" in df.columns else 0)
+        st.metric("Mobile Numbers", df["Mobile"].nunique() if "Mobile" in df.columns else 0)
     
     st.divider()
     
@@ -98,8 +98,8 @@ else:
     
     # Reorder columns for better display
     column_order = [col for col in [
-        "id", "first_name", "last_name", "email", "mobile", "tournament", 
-        "category", "match_status", "number", "sabha_reference_name", "spl_no", "image"
+        "Primary_Key", "First Name", "Last Name", "Email", "Mobile", "Tournament", 
+        "Category", "Match Status", "Number", "Sabha Reference Name", "Spl No", "Image"
     ] if col in filtered_df.columns]
     
     display_df = filtered_df[column_order]
